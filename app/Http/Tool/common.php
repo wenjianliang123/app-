@@ -9,6 +9,6 @@ class common extends Controller
 {
     public function get_post()
     {
-        echo 1;
+        echo 122;
     }
 }
