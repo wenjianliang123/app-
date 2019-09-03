@@ -16,5 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/','wjl\ceshi@index');
-//测试get post 封装在一个方法中
+//测试get post 封装在一个方法中 自己写的不成熟
 Route::get('/test','get_post_controller@test');
+//测试get post 原始数据xml、json
+Route::get('/test_1','get_post_controller@test_1');
