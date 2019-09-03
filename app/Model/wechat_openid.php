@@ -20,6 +20,16 @@ class wechat_openid extends Model
      * 主键
      */
     protected $primaryKey = 'id';
+
+    /**
+     *如果你想让所有属性都可以批量赋值， 你可以将 $guarded 定义成一个空数组：
+     * /**
+     *
+     * 不可以批量赋值的属性。 如果为空就是都可以批量赋值
+     *
+     * @var array
+     */
+    protected $guarded = [];
     /**
      * 模型日期列的存储格式。
      *
