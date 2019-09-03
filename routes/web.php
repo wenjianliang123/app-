@@ -20,3 +20,5 @@ Route::get('/','wjl\ceshi@index');
 Route::get('/test','get_post_controller@test');
 //测试get post 原始数据xml、json
 Route::get('/test_1','get_post_controller@test_1');
+//接口：：获取用户列表
+Route::get('/wechat_openid','get_post_controller@wechat_openid');

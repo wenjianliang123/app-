@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Tool\common;
+use App\Model\wechat_openid;
 
 class get_post_controller extends Controller
 {
@@ -53,7 +54,7 @@ class get_post_controller extends Controller
         dd($post_data);*/
 
         //原始xml、json数据  有点问题
-        /*$url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=".$this->curl->get_access_token();
+        $url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=".common::get_access_token();
         $data=[
             "type"=>"image",
             "offset"=>0,
@@ -62,9 +63,14 @@ class get_post_controller extends Controller
 //        echo 1;die;
         $header[]="Content-type: text/xml;charset='utf-8'";
         $post_data=common::curl_get_post_originData($url,"POST",json_encode($data),$header);
-        dd($post_data);*/
+//        echo 1;die;
+        dd($post_data);
     }
 
     //做一个可供别人访问的接口 （用模型做）
-
+    public function wechat_openid()
+    {
+        $data=wechat_openid::get()->toarray();
+        dd($data);
+    }
 }
