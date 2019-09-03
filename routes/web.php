@@ -16,9 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/','wjl\ceshi@index');
-//测试get post 封装在一个方法中 自己写的不成熟
+//测试 curl get post 封装在一个方法中 自己写的不成熟
 Route::get('/test','get_post_controller@test');
-//测试get post 原始数据xml、json
+//测试 curl get post 原始数据xml、json
 Route::get('/test_1','get_post_controller@test_1');
 //接口：：获取用户列表
 Route::get('/wechat_openid','get_post_controller@wechat_openid');
+//测试 file_get_contents get post请求方式
+Route::get('/file_get_contents_get_post','get_post_controller@file_get_contents_get_post');
