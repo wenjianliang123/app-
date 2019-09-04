@@ -18,11 +18,15 @@
         var user_tel=$("[name='user_tel']").val();
         //调用后台接口
         $.ajax({
-            url:"http://www.dijiuyue.com//api/user/user_add",
+            url:"http://www.dijiuyue.com/api/user/restful",
+            type:"POST",
             data:{user_name:user_name,user_tel:user_tel},
             dataType:"json",
             success:function(res){
                 alert(res.msg);
+                if(res.code==200){
+                    location.href="{{asset("/user/user_list")}}";
+                }
             }
         });
     });
