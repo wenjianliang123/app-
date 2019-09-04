@@ -8,7 +8,7 @@ class wechat_openid extends Model
 {
     //数据库连接
     protected $connection = 'mysql_shop';
-    protected $table = 'wechat_openid';
+    protected $table = 'ceshi_user';
     /**
      * 指示模型是否自动维护时间戳
      *
@@ -19,7 +19,7 @@ class wechat_openid extends Model
     /**
      * 主键
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'user_id';
 
     /**
      *如果你想让所有属性都可以批量赋值， 你可以将 $guarded 定义成一个空数组：

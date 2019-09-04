@@ -17,21 +17,21 @@ class get_post_controller extends Controller
     public function test()
     {
         //get
-        /*
+
         $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WECHAT_APPID')."&secret=".env('WECHAT_APPSECRET');
         $aa=$this->common->get_post($url);
         dd($aa);
-        */
+
 
         //post
-        $url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=".$this->curl->get_access_token();
+        /*$url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=".$this->curl->get_access_token();
         $data=[
             "type"=>"image",
             "offset"=>0,
             "count"=>1
         ];
         $post_data=$this->curl->get_post($url,json_encode($data));
-        dd($post_data);
+        dd($post_data);*/
     }
 
     //测试二 老师提供的代码 get post 原始数据xml、json
