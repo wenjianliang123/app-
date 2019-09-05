@@ -14,10 +14,12 @@
 <script>
     //获取url参数 不用php代码
     var user_id = getUrlParam('user_id');
+    var url="http://www.dijiuyue.com/api/user/restful";
 //    alert(user_id);
     //在页面中显示默认值
     $.ajax({
-        url:"http://www.dijiuyue.com/api/user/find",
+        url:url+"/"+user_id,  //api/xxxx/2
+        type:"GET",
         data:{user_id:user_id},
         dataType:"json",
         success:function(res){
@@ -33,11 +35,15 @@
         var user_tel=$("[name='user_tel']").val();
         //调用后台接口
         $.ajax({
-            url:"http://www.dijiuyue.com/api/user/save",
-            data:{user_name:user_name,user_tel:user_tel,user_id:user_id},
+            url:url+"/"+user_id,
+            type:"POST",
+            data:{_method:"PUT",user_name:user_name,user_tel:user_tel},
             dataType:"json",
             success:function(res){
                 alert(res.msg);
+                if(res.code==200){
+                    location.href="{{asset("/user/user_list")}}";
+                }
             }
         });
     });

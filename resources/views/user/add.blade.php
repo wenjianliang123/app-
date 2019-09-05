@@ -16,9 +16,10 @@
         // alert(1);
         var user_name=$("[name='user_name']").val();
         var user_tel=$("[name='user_tel']").val();
+        var url="http://www.dijiuyue.com/api/user/restful";
         //调用后台接口
         $.ajax({
-            url:"http://www.dijiuyue.com/api/user/restful",
+            url:url,
             type:"POST",
             data:{user_name:user_name,user_tel:user_tel},
             dataType:"json",

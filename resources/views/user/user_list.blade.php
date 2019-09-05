@@ -12,7 +12,7 @@
     <tr>
         <td>Id</td>
         <td>姓名</td>
-        <td>电话</td>
+        <td>电话22</td>
         <td>操作</td>
     </tr>
     <tbody class="add">
@@ -23,8 +23,10 @@
 </html>
 <script src="{{asset('/jquery-3.3.1.js')}}"></script>
 <script>
+    var url="http://www.dijiuyue.com/api/user/restful";
     $.ajax({
-        url:"http://www.dijiuyue.com/api/user/user_list",
+        url:url,
+        type:"GET",
         dataType:'json',
         success:function(res){
             console.log(res);
@@ -45,7 +47,8 @@
         var user_id = $(this).attr('user_id');
         _this=$(this);
         $.ajax({
-            url:"http://www.dijiuyue.com/api/user/user_del",
+            url:url+"/"+user_id,
+            type:"delete",
             data:{user_id:user_id},
             dataType:'json',
             success:function(res){

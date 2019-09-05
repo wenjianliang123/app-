@@ -115,8 +115,10 @@ class UserRestfulController extends Controller
      * @return \Illuminate\Http\Response
      */
     //执行删除
-    public function destroy($user_id)
+    public function destroy(Request $request,$user_id)
     {
+        $user_id=$request->all();
+//        dd($user_id);
         $res= wechat_openid::where(['user_id'=>$user_id])->delete();
         if($res){
             return json_encode(['code'=>200,'msg'=>'删除成功']);
