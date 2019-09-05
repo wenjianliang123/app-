@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('bootstrap.admin')
+@section('content')
 <h3>接口基础-用户展示</h3>
-<input type="text" name="user_name" >
-<input type="submit" value="搜索">
-<table border="1">
+<form class="form-inline" >
+    <div class="form-group">
+        <label class="sr-only" for="exampleInputEmail3">Email address</label>
+        <input type="text" name="user_name" class="form-control" style="width: auto">
+    </div>
+    <input type="button" value="搜索" class="search btn btn-info">
+</form>
+
+<table border="1" class="table table-striped">
     <tr>
         <td>Id</td>
         <td>姓名</td>
@@ -21,12 +20,30 @@
 
     </tbody>
 </table>
-    <div name="pagination" class="pagination">
+    {{--<div name="pagination" class="pagination">--}}
 
-    </div>
-</body>
-</html>
-<script src="{{asset('/jquery-3.3.1.js')}}"></script>
+    {{--</div>--}}
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
 <script>
     //定义一个地址 以后方便更改
     var url="http://www.dijiuyue.com/api/user/restful";
@@ -68,7 +85,7 @@
      * 发送ajax请求后台接口
      * 渲染页面
      */
-    $("[type=submit]").click(function () {
+    $(".search").click(function () {
         var user_name=$("[name=user_name]").val();
 //        alert(user_name);
         $.ajax({
@@ -117,9 +134,9 @@
             tr.append("<td>"+v.user_name+"</td>");
             tr.append("<td>"+v.user_tel+"</td>");
             tr.append("<td>" +
-                "<a href='javascript:;' class='del' user_id='"+v.user_id+"'>删除</a>" +
+                "<a href='javascript:;' class='del btn btn-danger'  user_id='"+v.user_id+"'>删除</a>" +
                 "&nbsp||&nbsp" +
-                "<a href='javascript:;' class='find' user_id='"+v.user_id+"'>修改</a></td>");
+                "<a href='javascript:;' class='find btn btn-success' user_id='"+v.user_id+"'>修改</a></td>");
             //填入空白tbody
             $(".add").append(tr);
         });
@@ -130,12 +147,13 @@
         {
             //current_page是当前页
             if(i==res.data.current_page){
-                page+="<a href='javascript:;' style='color:#D50000' page='"+i+"'>第"+i+"页</a>";
+                page+="<li class='active'><a href='javascript:;' style='color: #7adddd' page='"+i+"'>第"+i+"页</a></li>";
             }else{
-                page+="<a href='javascript:;' page='"+i+"'>第"+i+"页</a>";
+                page+="<li><a href='javascript:;' page='"+i+"'>第"+i+"页</a></li>";
             }
         }
         //填入空白div 生成页码链接
-        $("[name=pagination]").html(page);
+        $(".pagination").html(page);
     }
 </script>
+@endsection

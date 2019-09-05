@@ -1,14 +1,14 @@
+@extends('bootstrap.admin')
+@section('content')
 <form action="" method="post" enctype="multipart/form-data">
     <h3>接口基础-用户修改</h3>
     <div class="form-group">
-        <label for="exampleInputEmail1">用户名</label>
-        <input type="text" class="form-control" name="user_name" placeholder="用户名">
+        <input type="text" class="form-control" style="width: auto" name="user_name" placeholder="用户名">
     </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">电话号</label>
-        <input type="text" class="form-control" name="user_tel" placeholder="电话号">
+        <input type="number" class="form-control" style="width: auto" name="user_tel" placeholder="电话号">
     </div>
-    <button type="button" class="btn btn-default save">修改</button>
+    <button type="button" class="save btn btn-success">修改</button>
 </form>
 <script src="{{asset('/jquery-3.3.1.js')}} "></script>
 <script>
@@ -56,3 +56,4 @@
     }
 
 </script>
+@endsection
