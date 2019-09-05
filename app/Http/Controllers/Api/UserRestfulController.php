@@ -14,9 +14,16 @@ class UserRestfulController extends Controller
      * @return \Illuminate\Http\Response
      */
     //列表展示
-    public function index()
+    public function index(Request $request)
     {
-        $data =wechat_openid::get()->toArray();
+        $user_name=$request->input("user_name");
+//        dd($user_nmae);
+        $where=[];
+        if (!empty($user_name)){
+            $where[]=['user_name','like',"%$user_name%"];
+        }
+        $data =wechat_openid::where($where)->paginate(2)->toArray();
+//        dump($data);die;
         return json_encode(['code'=>'200','data'=>$data]);
     }
 
