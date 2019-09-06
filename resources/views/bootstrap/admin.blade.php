@@ -13,10 +13,15 @@
     {{--opacity:0.9;--}}
     {{--background-color: rgba(0,0,0,0.1);--}}
     {{--51,122,183--}}
+
+
+    {{--类似于 php代码中的  echo  str_replace("$user_info['user_name']", "<td style='color: red'>".搜索的值."</td>", $user_info);   重点是 $user_info['user_name']  js中这个东西没办法搞到  你有办法么--}}
 </head>
-<body style="margin-top: 5%;background-color:transparent;border-width:0px;outline:none;">
+<body style="margin-top: 5%;">
     <div class="container">
-        @yield('content')
+        <center>
+            @yield('content')
+        </center>
     </div>
 </body>
 </html>

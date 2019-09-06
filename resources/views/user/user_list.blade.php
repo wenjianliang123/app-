@@ -7,7 +7,7 @@
             <label class="sr-only" for="exampleInputEmail3">Email address</label>
             <input type="text"  name="user_name" class="form-control" style="width: auto;background-color: rgba(0,0,0,0.1);">
         </div>
-        <input type="button" style="background-color: rgba(0,0,0,0.1);" value="搜索" class="search btn btn-info">
+        <input type="button" style="" value="搜索" class="search btn btn-info">
     </form>
 
     <table class="table table-striped" style="cellspacing:0;cellpadding:0">
@@ -97,40 +97,7 @@
             data:{user_name:user_name},
             dataType:'json',
             success:function(res){
-                $(".add").empty();
-                $.each(res.data.data,function(i,v){
-                    //定义一个空tr
-                    var tr=$("<tr style='background-color: rgba(0,0,0,0.1);'></tr>");
-                    //往tr里面内部后面追加
-                    tr.append("<td>"+v.user_id+"</td>");
-                    if(v.user_name,'like',"%user_name%"){
-                        tr.append("<td style='color: #D50000'>"+v.user_name+"</td>");
-                    }else{
-                        tr.append("<td>"+v.user_name+"</td>");
-                    }
-
-                    tr.append("<td>"+v.user_tel+"</td>");
-                    tr.append("<td>" +
-                        "<a href='javascript:;' class='del btn btn-danger'  user_id='"+v.user_id+"'>删除</a>" +
-                        "&nbsp||&nbsp" +
-                        "<a href='javascript:;' class='find btn btn-success' user_id='"+v.user_id+"'>修改</a></td>");
-                    //填入空白tbody
-                    $(".add").append(tr);
-                });
-                //构建页码
-                var page="";
-                // 根据页面返回的last_page参数循环  last_page是一共多少页
-                for (var i=1;i<=res.data.last_page;i++)
-                {
-                    //current_page是当前页
-                    if(i==res.data.current_page){
-                        page+="<li class='active'><a href='javascript:;' style='color: #7adddd' page='"+i+"'>第"+i+"页</a></li>";
-                    }else{
-                        page+="<li style=''><a href='javascript:;' page='"+i+"'>第"+i+"页</a></li>";
-                    }
-                }
-                //填入空白div 生成页码链接
-                $(".pagination").html(page);
+                wjl_page(res)
             },
         });
 
@@ -161,13 +128,32 @@
 
     //封装的刷新页面、构建页码
     function wjl_page(res) {
+        var user_name=$("[name=user_name]").val();
         $(".add").empty();
+        var str='';
+        var name_arr='';
+        var span="<span style='color: #D50000'></span>";
+        var sub_length=span.length+user_name.length;
+        var sub_slice='';
         $.each(res.data.data,function(i,v){
             //定义一个空tr
             var tr=$("<tr style='background-color: rgba(0,0,0,0.1);'></tr>");
             //往tr里面内部后面追加
             tr.append("<td>"+v.user_id+"</td>");
-            tr.append("<td>"+v.user_name+"</td>");
+            if(user_name!=''){
+                str='';
+                name_arr = v.user_name.split(user_name);
+//                    console.log(str);
+                $.each(name_arr,function(key,value){
+                    str+=value+"<span style='color: #D50000'>"+user_name+"</span>";
+                });
+                sub_slice= str.slice(0,-sub_length);
+
+                tr.append("<td>"+sub_slice+"</td>");
+            }else{
+                tr.append("<td>"+v.user_name+"</td>");
+            }
+
             tr.append("<td>"+v.user_tel+"</td>");
             tr.append("<td>" +
                 "<a href='javascript:;' class='del btn btn-danger'  user_id='"+v.user_id+"'>删除</a>" +

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class common extends Controller
 {
-    //用curl 写的
+    //用curl 写的 比较全面
     public static function curl_get_post_originData($url,$method="GET",$postData=[],$header=[])
     {
         //1初始化
@@ -31,7 +31,7 @@ class common extends Controller
         return $content;
     }
 
-    //用curl 封装HTTP中的get和post 请求方式 自己写的不成熟
+    //用curl 封装HTTP中的get和post 请求方式 自己写的不成熟 但是功能可以实现
     public function get_post($url,$data='')
     {
         //1初始化
