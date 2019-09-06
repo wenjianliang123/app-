@@ -55,9 +55,25 @@ class UploadController extends Controller
     {
         return view("upload.upload_binary_view");
     }
-    /*//执行二进制文件上传 老师带的写的
-    public function upload_binary()
+    //执行二进制文件上传 老师带的写的
+    /*public function upload_binary()
     {
+        //检查二进制流图片类型 --老师带的写的
+        function check_image_type($data)
+        {
+            $bits = array(
+                'JPEG' => "\xFF\xD8\xFF",
+                'GIF' => "GIF",
+                'PNG' => "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a",
+                'BMP' => 'BM',
+            );
+            foreach ($bits as $type => $bit) {
+                if (substr($data, 0, strlen($bit)) === $bit) {
+                    return $type;
+                }
+            }
+            return 'UNKNOWN IMAGE TYPE';
+        }
         //报413是你的图片太大了
         //接收原始数据流数据 （二进制流 xml、json）
         $data=file_get_contents("php://input");
@@ -65,7 +81,7 @@ class UploadController extends Controller
 //        dd($data);
         //保存图片
         //拿到后缀名
-        $extension_name=$this->check_image_type($data);
+        $extension_name=check_image_type($data);
         //判断种类 先拿到后缀名转小写
         $data_type="image/".strtolower($extension_name);
         $allowType=array("image/jpeg","image/jpg","image/png","imgae/gif");
@@ -73,7 +89,14 @@ class UploadController extends Controller
         if(!in_array($data_type,$allowType)){
             echo "文件类型不是 image/jpeg,image/jpg,image/png,imgae/gif";
         }
+        //创建文件夹和新的不重复文件名 传过去一个后缀名 和 资源数据
+        $this->create_file_info($extension_name,$data);
 
+    }*/
+
+    //封装的二进制创建文件夹和文件名的方法
+    function create_file_info($extension_name,$data)
+    {
         //新的不重复的名字 --理论上
         $new_name=md5(time().rand(1000,9999)).'.'.$extension_name;
         //建一个 2019-9-6格式的日期文件夹
@@ -92,28 +115,10 @@ class UploadController extends Controller
         if($file_is){
             echo "上传成功,上传的文件在当前项目中的public目录下,但是不建议在项目中做，最好在localhost中做";//
         }
-
     }
-    //检查二进制流图片类型 --老师带的写的
-    function check_image_type($data)
-    {
-        $bits = array(
-            'JPEG' => "\xFF\xD8\xFF",
-            'GIF' => "GIF",
-            'PNG' => "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a",
-            'BMP' => 'BM',
-        );
-        foreach ($bits as $type => $bit) {
-            if (substr($data, 0, strlen($bit)) === $bit) {
-                return $type;
-            }
-        }
-        return 'UNKNOWN IMAGE TYPE';
-    }*/
-    
-    
-    //优化检测类型 优化 生成文件夹 完成今日作业 询问搜索高亮
-    //upload_binary  执行二进制文件上传 老师带的写的
+
+    //优化检测类型 优化 生成文件夹 完成今日作业 询问搜索高亮(除了base64的其他的都已经已完成)
+    //upload_binary  执行二进制文件上传 老师的思路(从前台直接传数据回来file.name file.size file.type) 自己执行了一遍
     public function upload_binary()
     {
         //从前台url地址传过来的文件信息
@@ -140,24 +145,7 @@ class UploadController extends Controller
             echo "文件类型不是 image/jpeg,image/jpg,image/png,imgae/gif";
         }
 
-        //新的不重复的名字 --理论上
-        $new_name=md5(time().rand(1000,9999)).'.'.$extension_name;
-        //建一个 2019-9-6格式的日期文件夹
-        $date=date("Y-n-j");
-//        dd($date);
-        $file_dir="./image/".$date;
-        //如果不存在创建
-        if(!file_exists($file_dir)){
-            mkdir($file_dir);
-        }
-        $move=$file_dir.'/'.$new_name;
-//        dd($move);
-        //二进制没存到服务器 只是接了一个字符串 所以不能move_uploaded_file
-        // 可以在前台的url里面拼接
-        $file_is=file_put_contents($move,$data);
-        if($file_is){
-            echo "上传成功,上传的文件在当前项目中的public目录下,但是不建议在项目中做，最好在localhost中做";//
-        }
+        $this->create_file_info($extension_name,$data);
     }
 
 }
