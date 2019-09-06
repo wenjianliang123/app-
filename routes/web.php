@@ -42,8 +42,7 @@ Route::get('/user/user_list',function(){
 Route::get('/user/find',function(){
     return view('user/find');
 });
-
-
+//接口curd方法
 Route::prefix('api/user')->group(function() {
     //用户接口列表
     Route::get('/user_list','Api\userController@user_list');
@@ -56,13 +55,15 @@ Route::prefix('api/user')->group(function() {
     //执行修改
     Route::get('/save','Api\userController@save');
 });
-
-
+//接口curd 搜索分页带前端样式 restful风格
 /**
  * restful
  *  API设计理念：URL定位资源，用HTTP动词（GET,POST,DELETE,DETC）描述操作
  *
  * --restful需要去除csrf 不必担心接口安全问题 (cdrf是身份伪造 而restful无法传输cookie、session等包含身份的信息 所以不必考虑)  一般是前后端分离或者支付宝响应的时候需要不设置csrfToken校验的接口,laravel推荐使用passport安全校验设计接口 csrf要借助浏览器来攻击，restful不用浏览器。
  */
-
 Route::resource('api/user/restful','Api\UserRestfulController');
+
+
+//签名
+Route::get('/sign','Api\SignController@index');

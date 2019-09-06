@@ -16,14 +16,18 @@ class UserRestfulController extends Controller
     //列表展示
     public function index(Request $request)
     {
+//        dd(md5("1901"."问建梁"."21"));
         $user_name=$request->input("user_name");
 //        dd($user_nmae);
         $where=[];
         if (!empty($user_name)){
             $where[]=['user_name','like',"%$user_name%"];
+        }elseif (!empty($user_name)){
+            $where[]=['user_tel','like',"%$user_name%"];
         }
         $data =wechat_openid::where($where)->paginate(2)->toArray();
-//        dump($data);die;
+//        dump($data['data']);die;
+
         return json_encode(['code'=>'200','data'=>$data]);
     }
 

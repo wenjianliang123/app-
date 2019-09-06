@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="background-image: url('http://www.dijiuyue.com/image/111.jpg');width: auto; background-size: 100%,100%;">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,9 +10,11 @@
     <script src="{{asset('bootstrap/jquery.min.js')}}"></script>
     <script src="{{asset('bootstrap/bootstrap.min.js')}}"></script>
     <link rel="stylesheet" href="{{asset('bootstrap/bootstrap.min.css')}}">
-
+    {{--opacity:0.9;--}}
+    {{--background-color: rgba(0,0,0,0.1);--}}
+    {{--51,122,183--}}
 </head>
-<body style="margin-top: 5%">
+<body style="margin-top: 5%;background-color:transparent;border-width:0px;outline:none;">
     <div class="container">
         @yield('content')
     </div>
