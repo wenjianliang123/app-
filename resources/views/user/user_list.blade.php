@@ -130,24 +130,26 @@
     function wjl_page(res) {
         var user_name=$("[name=user_name]").val();
         $(".add").empty();
-        var str='';
-        var name_arr='';
-        var span="<span style='color: #D50000'></span>";
-        var sub_length=span.length+user_name.length;
-        var sub_slice='';
+        var str='';//简单定义一个str容器 //容器：仅是为了定义 实际为空
+        var name_arr='';//定义一个用户名容器
+        var span="<span style='color: #D50000;'></span>";//定义一个空白的span
+        var sub_length=span.length+user_name.length;//计算span标签和搜索值的长度
+        var sub_slice='';//定义截取容器
         $.each(res.data.data,function(i,v){
             //定义一个空tr
             var tr=$("<tr style='background-color: rgba(0,0,0,0.1);'></tr>");
             //往tr里面内部后面追加
             tr.append("<td>"+v.user_id+"</td>");
+            //判断是否在搜索
             if(user_name!=''){
-                str='';
-                name_arr = v.user_name.split(user_name);
+                str='';//循环后重新清空
+                name_arr = v.user_name.split(user_name);//字符串分割 和explode分割数组原理差不多  //这一步就是 问建梁123分割为就是 ''.123 空白部分就是搜索值
 //                    console.log(str);
                 $.each(name_arr,function(key,value){
                     str+=value+"<span style='color: #D50000'>"+user_name+"</span>";
+                    //问建梁123 value就是123 span包着的就是红色的问建梁
                 });
-                sub_slice= str.slice(0,-sub_length);
+                sub_slice= str.slice(0,-sub_length+1);//截取倒着数问建梁123但是后面的123少一位 所以加一  倒着数就是不管问建梁前面还是后面都能避免遗漏
 
                 tr.append("<td>"+sub_slice+"</td>");
             }else{

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" style="background-image: url('http://www.dijiuyue.com/image/111.jpg');width: auto; background-size: 100%,100%;">
+<html lang="zh-CN" style="width: auto;">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,9 +15,9 @@
     {{--51,122,183--}}
 
 
-    {{--类似于 php代码中的  echo  str_replace("$user_info['user_name']", "<td style='color: red'>".搜索的值."</td>", $user_info);   重点是 $user_info['user_name']  js中这个东西没办法搞到  你有办法么--}}
+
 </head>
-<body style="margin-top: 5%;">
+<body style="margin-top: 5%;background-color: rgba(0,0,0,0.1);background-image: url('http://www.dijiuyue.com/image/111.jpg');background-size: 100%,100%;">
     <div class="container">
         <center>
             @yield('content')
