@@ -81,7 +81,7 @@
             location.href="http://www.dijiuyue.com/user/find?user_id="+user_id;
     });
 
-    //ajax搜索
+    //ajax搜索 搜索结果高亮
     /**
      * 点击搜索按钮
      * 获取搜索内容

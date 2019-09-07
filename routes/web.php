@@ -73,7 +73,11 @@ Route::get('api/sign','Api\SignController@index');
 Route::get('api/upload_view','Upload\UploadController@upload_view');
 //二进制文件上传视图
 Route::get('api/upload_binary_view','Upload\UploadController@upload_binary_view');
+//Base64文件上传视图
+Route::get('api/upload_Base64_view','Upload\UploadController@upload_Base64_view');
 //执行form-data文件上传
 Route::POST('api/upload','Upload\UploadController@upload');
 //执行二进制文件上传
 Route::POST('api/upload_binary','Upload\UploadController@upload_binary');
+//执行Base64文件上传
+Route::POST('api/upload_Base64','Upload\UploadController@upload_Base64');
