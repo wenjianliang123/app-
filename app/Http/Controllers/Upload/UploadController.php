@@ -7,12 +7,17 @@ use App\Http\Controllers\Controller;
 
 class UploadController extends Controller
 {
+    //表单form-data 视图
     public function upload_view()
     {
         //form-data POST //表单对象上传 异步文件上传和同步（普通表单）差不多
         return view("upload.upload");
     }
-    //form-data POST //表单对象上传 异步文件上传和同步（普通表单）差不多
+    /**
+     * form-data POST //表单对象上传 异步文件上传和同步（普通表单）差不多
+     * 用$_FILES接收 本质和表单一样 从前台传过来一个对象进行处理
+     * 用move_uploaded_file移动文件 php已经自动完成了文件上传 所需做的就是移动位置
+     */
     public function upload()
     {
 //        dd($_POST);
@@ -55,7 +60,13 @@ class UploadController extends Controller
     {
         return view("upload.upload_binary_view");
     }
-    //执行二进制文件上传 老师带的写的
+    /**
+     * 执行二进制文件上传 传过来的是一个乱码的二进制流文件 多用于移动端
+     * 方法一 老师带的写的
+     * 不可以用jqueryAJAX传输 只能用原生的AJAX
+     * 用file_get_contents("php://input")接收原始数据
+     * 用file_put_contents存储
+     */
     /*public function upload_binary()
     {
         //检查二进制流图片类型 --老师带的写的
@@ -94,7 +105,9 @@ class UploadController extends Controller
 
     }*/
 
-    //封装的二进制创建文件夹和文件名的方法
+    /**
+     * 封装的二进制创建文件夹和文件名的方法
+     */
     function create_file_info($extension_name,$data)
     {
         //新的不重复的名字 --理论上
@@ -117,8 +130,11 @@ class UploadController extends Controller
         }
     }
 
-    //优化检测类型 优化 生成文件夹 完成今日作业 询问搜索高亮(除了base64的其他的都已经已完成)
-    //upload_binary  执行二进制文件上传 老师的思路(从前台直接传数据回来file.name file.size file.type) 自己执行了一遍
+   /**
+    * 执行二进制文件上传
+    * 方法二 老师的思路(从前台直接传数据回来file.name file.size file.type)
+    * 自己执行了一遍
+    */
     public function upload_binary()
     {
         //从前台url地址传过来的文件信息
@@ -147,5 +163,14 @@ class UploadController extends Controller
 
         $this->create_file_info($extension_name,$data);
     }
+
+    /**
+     * base64文件上传 就是 data:banse64;image/jpeg,btmunbvdcs...的格式
+     * 传回来的字符串就是一个可直接打开的图片url 图片预览的大多数插件就是用这个url做的
+     * 原理还是二进制流 但是经过base64加密后可以用jqueryAJAX传输
+     * 传输的数据就是一些普通的字符串
+     * 用$_POST接收 用file_put_contents存储
+     */
+
 
 }
