@@ -186,7 +186,9 @@ class UploadController extends Controller
     /**
      * @param $file_info 前台接收回来的数据
      * @param $data 处理好的可以直接写入文件的数据
-     * 封装的生成后缀名、判断文件大小、类型的方法、以及生成文件夹 自己写的
+     * 封装的生成后缀名、判断文件大小、类型的方法、以及生成文件夹 (***自己写的***)
+     * ***************************新的优化思路 *****************************
+     * 在下面的判断大小和类型以及错误号 用||或者 以及 if$error 存在 判断错误号
      */
     public function create_extension_name_and_file_name_and_file_dir($file_info, $data)
     {
