@@ -65,7 +65,7 @@ Route::prefix('api/user')->group(function() {
 Route::resource('api/user/restful','Api\UserRestfulController');
 
 
-//签名
+//签名算法设计
 Route::get('api/sign','Api\SignController@index');
 
 
@@ -81,3 +81,21 @@ Route::POST('api/upload','Upload\UploadController@upload');
 Route::POST('api/upload_binary','Upload\UploadController@upload_binary');
 //执行Base64文件上传
 Route::POST('api/upload_Base64','Upload\UploadController@upload_Base64');
+
+//商品管理
+//接口添加视图
+Route::get('goods/add',function(){
+    return view('admin.goods.add');
+});
+//接口展示视图
+Route::get('/goods/goods_list',function(){
+    return view('admin.goods.index');
+});
+//修改查询
+Route::get('/goods/find',function(){
+    return view('admin.goods.find');
+});
+Route::resource('api/goods/restful','Api\GoodsController');
+
+//加密
+Route::get('api/encrypt','Encrypt\EncryptController@index');

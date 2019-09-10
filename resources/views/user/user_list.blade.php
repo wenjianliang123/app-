@@ -130,11 +130,13 @@
     function wjl_page(res) {
         var user_name=$("[name=user_name]").val();
         $(".add").empty();
+        /*************下面的是ajax搜索结果高亮用到的定义容器*********************/
         var str='';//简单定义一个str容器 //容器：仅是为了定义 实际为空
         var name_arr='';//定义一个用户名容器
         var span="<span style='color: #D50000;'></span>";//定义一个空白的span
         var sub_length=span.length+user_name.length;//计算span标签和搜索值的长度
         var sub_slice='';//定义截取容器
+        //****************************************************
         $.each(res.data.data,function(i,v){
             //定义一个空tr
             var tr=$("<tr style='background-color: rgba(0,0,0,0.1);'></tr>");

@@ -18,11 +18,11 @@ class UploadController extends Controller
      * 用$_FILES接收 本质和表单一样 从前台传过来一个对象进行处理
      * 用move_uploaded_file移动文件 php已经自动完成了文件上传 所需做的就是移动位置
      */
-    public function upload()
+    public function upload($file)
     {
 //        dd($_POST);
 //        var_dump($_FILES);
-    $file=$_FILES['file'];
+//    $file=$_FILES['file'];
 //    dd($file);
         $allowType=array("image/jpeg","image/jpg","image/png","imgae/gif");
         //判断大小是否超过2MB
@@ -50,9 +50,10 @@ class UploadController extends Controller
         }
         $move=$file_dir.'/'.$new_name;
         $file_is=move_uploaded_file($file['tmp_name'],$move);
-        if($file_is){
-            echo "上传成功,上传的文件在当前项目中的public目录下,但是不建议在项目中做，最好在localhost中做";//
-        }
+        return $move;
+//        if($file_is){
+//            echo "上传成功,上传的文件在当前项目中的public目录下,但是不建议在项目中做，最好在localhost中做";//
+//        }
     }
 
     //二进制流视图

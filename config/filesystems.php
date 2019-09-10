@@ -45,7 +45,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+//            'root' => storage_path('app'),//软连接
+            'root'=>public_path(),//改为public目录地址
         ],
 
         'public' => [
