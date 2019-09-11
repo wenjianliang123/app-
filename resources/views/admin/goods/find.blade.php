@@ -23,6 +23,7 @@
         //获取url参数 不用php代码
         var goods_id = getUrlParam('goods_id');
         var url="http://www.dijiuyue.com/api/goods/restful";
+        var base64Str;
         //    alert(user_id);
         //在页面中显示默认值
         $.ajax({
@@ -40,7 +41,7 @@
             }
         });
         $("#file").on('change',function () {
-               alert(1);
+              /* alert(1);
 //            return;
             var fd= new FormData();
             var file=$("#file")[0].files[0];
@@ -59,17 +60,25 @@
                 processData:false,
                 success:function (res) {
                     console.log(res);
-
-//                        alert('22');
-//                        alert(res.img_url);
                         $("#img_show").prop('src','/'+res.img_url);
-
-
-
                 }
-            })
+            })*/
+
+
+
+            var file = $('#file')[0].files[0]; //获取到文件
+            var reader = new FileReader(); //h5
+            reader.readAsDataURL(file); //读base编码后的url地址
+            reader.onload = function()
+            {
+                base64Str = this.result;
+                //console.log(this.result);
+                $("#img_show").attr('src',this.result);
+            }
         });
-        $(".save").on('click',function(){
+
+        $(document).on('click','.save',function(){
+//            return;
             // alert(1);
             var goods_name=$("[name='goods_name']").val();
             var goods_price=$("[name='goods_price']").val();
@@ -77,9 +86,10 @@
             var file=$("#file")[0].files[0];
 //               console.log(file);return false;
             fd.append('_method',"PUT");
-
             fd.append('goods_name',goods_name);
             fd.append('goods_price',goods_price);
+            fd.append('file',file);
+//            console.log(fd);return;
             //调用后台接口
             $.ajax({
                 url:url+"/"+goods_id,
@@ -90,10 +100,9 @@
                 processData:false,
                 success:function(res){
                     alert(res.msg);
-                    {{--if(res.code==200){--}}
-                        {{--$("#img_show").prop('src','/'+res.img_url);--}}
-                        {{--location.href="{{asset("/goods/goods_list")}}";--}}
-                    {{--}--}}
+                    if(res.code==666){
+                        location.href="{{asset("/goods/goods_list")}}";
+                    }
                 }
             });
         });

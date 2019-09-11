@@ -6,7 +6,7 @@ use App\Model\GoodsModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Upload\UploadController;
-
+use App\Http\Tool\Aes;
 
 class GoodsController extends Controller
 {
@@ -30,6 +30,7 @@ class GoodsController extends Controller
      */
     public function index(Request $request)
     {
+//        echo phpinfo();die();
         $redis= new \Redis();
         $redis->connect("127.0.0.1",'6379');
         //清除所有的redis数据
@@ -106,11 +107,25 @@ class GoodsController extends Controller
 //        dd($goods_name);
         //调用自己写的 UploadController里面的form-data上传方法
         $goods_img_url=$this->UploadController->upload($goods_img_info);
-        $result=GoodsModel::insert([
-           'goods_name'=>$goods_name,
-           'goods_price'=>$goods_price,
-           'goods_img'=>$goods_img_url,
-        ]);
+
+
+        //Aes数据加密
+        $obj = new Aes('wenjianliang');
+        $url = [
+            'goods_name'=>$goods_name,
+            'goods_price'=>$goods_price,
+            'goods_img'=>$goods_img_url,
+        ];
+//        echo $eStr = $obj->encrypt($url);
+//        echo "<hr>";
+//        echo $newStr = $obj->decrypt($eStr);die;
+//        echo "<hr>";
+        $url=$obj->encrypt(serialize($url));
+//        dd($url);
+        //unserialize($obj->decrypt($url))
+        $result=GoodsModel::insert(unserialize($obj->decrypt($url)));
+//        dd($result);
+//        return;
         if ($result){
             echo "添加成功";
         }
@@ -152,56 +167,54 @@ class GoodsController extends Controller
      */
     public function update(Request $request, $goods_id)
     {
-//        $goods_name=$request->input('goods_name');
-//        $goods_price=$request->input('goods_price');
-////        dd($goods_name);
-////        dd($goods_price);
-////        dd($goods_id);
-//
-//        //如果没有选择图片
-//        if($request->file('file')==''){
-//                $GoodsModel = GoodsModel::find($goods_id);
-//                $GoodsModel->goods_name = $goods_name;
-//                $GoodsModel->goods_price = $goods_price;
-//                $result=$GoodsModel->save();
-//                if($result){
-//                    return json_encode(['code'=>200,'msg'=>'修改成功']);
-//                }
-//            $redis= new \Redis();
-//            $redis->connect("127.0.0.1",'6379');
-//            //清除所有的redis数据
-//            $redis->flushall();
-//
-//        }else{
-//            //有图片
-//                $path = $request->file('file')->store('image/'.date("Y-n-j"));
-////                dd($goods_id);
-//                if($path){
-//                    return json_encode(['code'=>666,'msg'=>'只图片上传成功','img_url'=>$path]);
-//                }
-//
-//           //暂时可以用 但是图片无法及时改变
-//           /* $path = $request->file('file')->store('image/'.date("Y-n-j"));
-////                    dd($goods_name);
-////        dd($goods_price);
-////        dd($goods_id);
-//            $GoodsModel = GoodsModel::find($goods_id);
-//            $GoodsModel->goods_name = $goods_name;
-//            $GoodsModel->goods_price = $goods_price;
-//            $GoodsModel->goods_img = $path;
-//            $result=$GoodsModel->save();
-//
-////        dd($data);
-//            if ($result){
-//                return json_encode(['code'=>200,'msg'=>'修改成功','img_url'=>$path]);
-//            }*/
-//        }
-        dd($goods_id);
+        $redis= new \Redis();
+        $redis->connect("127.0.0.1",'6379');
+
+
+        //接受传回来的商品名称、价格
         $goods_name=$request->input("goods_name");
         $goods_price=$request->input("goods_price");
-        if($request->file('file')!=='' && $goods_id!='' && $goods_name==''&&$goods_price==''){
-            //选择图片 进行文件上传
+        //定义是否有文件
+        $file=$request->file('file');
+        //无图 有id 有名称 有价格
+        if (!isset($file) && $goods_id!='' && $goods_name!=''&&$goods_price!=''){
+            $GoodsModel = GoodsModel::find($goods_id);
+                $GoodsModel->goods_name = $goods_name;
+                $GoodsModel->goods_price = $goods_price;
+                $result=$GoodsModel->save();
+                if($result){
+                    //清除所有的redis数据
+                    $redis->flushall();
+                    return json_encode(['code'=>666,'msg'=>'修改商品名称、商品价格成功']);
+                }
+        }elseif(isset($file) && $goods_id!='' && $goods_name!=''&&$goods_price!=''){
+            //有图 有id 有名称 有价格
+            $path = $request->file('file')->store('image/'.date("Y-n-j"));
+
+            $GoodsModel = GoodsModel::find($goods_id);
+            //这先定义原来数库的图片地址 否则下面修改后img再赋值的话 与$path新上传的图片地址一比较就会一样
+            $img_url=$GoodsModel->goods_img;
+            $GoodsModel->goods_name = $goods_name;
+            $GoodsModel->goods_price = $goods_price;
+            $GoodsModel->goods_img = $path;
+            $result=$GoodsModel->save();
+            if($result){
+//                dump($img_url);
+//                dump($path);die();
+                //清除所有的redis数据
+                $redis->flushall();
+                if($img_url!==$path){
+                    //@错误屏蔽符 如果删除不存在的文件会报错 屏蔽掉就好了
+                    $aa=@unlink("./".$img_url);//删除当前项目目录下的图片
+//                    dd($aa);
+                }
+                return json_encode(['code'=>666,'msg'=>'修改图片加名称加价格成功']);
+            }
+//
+
+
         }
+
     }
 
     /**

@@ -27,13 +27,13 @@ class UploadController extends Controller
         $allowType=array("image/jpeg","image/jpg","image/png","imgae/gif");
         //判断大小是否超过2MB
         if($file['size']>1024*1024*2){
-            echo "文件大小超过2MB";
+            echo "文件大小超过2MB";die();
             //判断类型
         }elseif(!in_array($file['type'],$allowType)){
-            echo "文件类型不是 image/jpeg,image/jpg,image/png,imgae/gif";
+            echo "文件类型不是 image/jpeg,image/jpg,image/png,imgae/gif";die();
             //判断错误号
         }elseif($file['error']!=0){
-            echo "这是错误号不为零的错误";
+            echo "这是错误号不为零的错误";die();
         }
         //后缀名
         $extension_name=pathinfo($file['name'],PATHINFO_EXTENSION);
@@ -139,7 +139,7 @@ class UploadController extends Controller
         return view("upload.uploadBase64");
     }
     //执行Base64文件上传 方法一 老师自己写的 自己又做了优化
-    /*public function upload_Base64()
+    public function upload_Base64()
     {
         //从前台url地址传过来的文件信息
         $file_info=$_GET;
@@ -156,7 +156,7 @@ class UploadController extends Controller
         //保存图片
         //封装的生成后缀名、判断文件大小、类型的方法、以及生成文件夹
         $this->create_extension_name_and_file_name_and_file_dir($file_info,$sub_str);
-    }*/
+    }
     
     //执行Base64文件上传 方法二 老师复制到网上的 看不太懂 正则表达式
     /*public function upload_Base64()

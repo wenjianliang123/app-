@@ -95,4 +95,8 @@ class common extends Controller
         dd($re);
 
     }
+
+
+
 }
+

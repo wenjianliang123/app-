@@ -97,5 +97,14 @@ Route::get('/goods/find',function(){
 });
 Route::resource('api/goods/restful','Api\GoodsController');
 
-//加密
-Route::get('api/encrypt','Encrypt\EncryptController@index');
+
+//凯撒加密
+Route::get('api/encrypt/caesar','Encrypt\EncryptController@index');
+
+//AES加密
+Route::get('api/encrypt/aes','Encrypt\AesController@aes_running');
+//自己测的Aes加密接口
+Route::get('api/encrypt/Aes_self_encrypt','Encrypt\AesController@Aes_self_encrypt');
+
+//Rsa加密
+Route::get('api/encrypt/rsa','Encrypt\RsaController@Rsa_running');

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 class EncryptController extends Controller
 {
+
+    //凯撒加密
     function jiami($str){
 //        $arr=range('a','z');
             $arr="abcdefghijklmnopqrstuvwxyz";
@@ -18,7 +20,7 @@ class EncryptController extends Controller
             echo substr($arr,$key,1);
         }
     }
-
+    //凯撒解密
     function jiemi($encrypt){
 //        $arr=range('a','z');
         $arr="abcdefghijklmnopqrstuvwxyz";
@@ -30,7 +32,7 @@ class EncryptController extends Controller
             echo substr($arr,$key,1);
         }
     }
-
+    //凯撒运用
     public function index()
     {
         //凯撒加密
@@ -42,6 +44,8 @@ class EncryptController extends Controller
 
 
     }
+
+
 
 
 
