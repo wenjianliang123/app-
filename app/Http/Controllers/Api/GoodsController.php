@@ -30,7 +30,7 @@ class GoodsController extends Controller
      */
     public function index(Request $request)
     {
-//        echo phpinfo();die();
+
         $redis= new \Redis();
         $redis->connect("127.0.0.1",'6379');
         //清除所有的redis数据

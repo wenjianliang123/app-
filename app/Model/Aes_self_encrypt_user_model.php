@@ -8,7 +8,7 @@ class Aes_self_encrypt_user_model extends Model
 {
     //数据库连接
     protected $connection = 'mysql_shop';
-    protected $table = 'Aes_self_encrypt_user';
+    protected $table = 'aes_self_encrypt_user';
     /**
      * 指示模型是否自动维护时间戳
      *

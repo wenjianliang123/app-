@@ -11,6 +11,8 @@ class AesController extends Controller
 {
     public function aes_running()
     {
+        echo phpinfo();die();
+
 //        $obj = new Aes('fdjfdsfjakfjadii');
         $obj = new Aes('wenjianliang');
         $url = "name=杨瑞娴&age=31&mobile=15388551679";
