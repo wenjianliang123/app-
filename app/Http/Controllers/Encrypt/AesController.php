@@ -11,8 +11,7 @@ class AesController extends Controller
 {
     public function aes_running()
     {
-        echo phpinfo();die();
-
+//        echo phpinfo();die();
 //        $obj = new Aes('fdjfdsfjakfjadii');
         $obj = new Aes('wenjianliang');
         $url = "name=杨瑞娴&age=31&mobile=15388551679";
@@ -21,8 +20,8 @@ class AesController extends Controller
 //        echo $newStr = $obj->decrypt($eStr);die;
 //        echo "<hr>";
         $authstr=$obj->encrypt($url);
-
-        $url=file_get_contents("http://www.dijiuyue.com/api/encrypt/Aes_self_encrypt?authstr=".$authstr);
+//        echo "http://app.wenjianliang.top/api/encrypt/Aes_self_encrypt?authstr=".$authstr;die();
+        $url=file_get_contents("http://app.wenjianliang.top/api/encrypt/Aes_self_encrypt?authstr=".$authstr);
         dd($url);
 
     }
@@ -60,29 +59,29 @@ class AesController extends Controller
 //
         if(strlen($data)==96){
             //数据正常
-                $user_info=Aes_self_encrypt_user_model::where([
+            $user_info=Aes_self_encrypt_user_model::where([
+                'user_name'=>$arr_query['name'],
+                'user_age'=>$arr_query['age'],
+                'user_mobile'=>$arr_query['mobile'],
+            ])->first();
+//                dd($user_info);
+            //判断是否有该用户
+            if($user_info){
+                //有该用户
+                echo "您已经注册!";die();
+            }else{
+                $result=Aes_self_encrypt_user_model::insert([
                     'user_name'=>$arr_query['name'],
                     'user_age'=>$arr_query['age'],
                     'user_mobile'=>$arr_query['mobile'],
-                ])->first();
-//                dd($user_info);
-                //判断是否有该用户
-                if($user_info){
-                    //有该用户
-                    echo "您已经注册!";die();
-                }else{
-                    $result=Aes_self_encrypt_user_model::insert([
-                        'user_name'=>$arr_query['name'],
-                        'user_age'=>$arr_query['age'],
-                        'user_mobile'=>$arr_query['mobile'],
-                    ]);
+                ]);
 //            dd($result);
-                    if($result){
-                        echo "添加成功";
-                    }else {
-                        echo "添加失败";die();
-                    }
+                if($result){
+                    echo "添加成功";
+                }else {
+                    echo "添加失败";die();
                 }
+            }
         }else{
             echo "数据不正确";die();
         }
