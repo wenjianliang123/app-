@@ -99,7 +99,7 @@ Route::resource('api/goods/restful','Api\GoodsController');
 
 
 //凯撒加密
-Route::get('api/encrypt/caesar','Encrypt\EncryptController@index');
+Route::get('api/encrypt/caesa r','Encrypt\EncryptController@index');
 
 //AES加密
 Route::get('api/encrypt/aes','Encrypt\AesController@aes_running');
@@ -108,3 +108,40 @@ Route::get('api/encrypt/Aes_self_encrypt','Encrypt\AesController@Aes_self_encryp
 
 //Rsa加密
 Route::get('api/encrypt/rsa','Encrypt\RsaController@Rsa_running');
+
+
+
+//商城项目
+
+//分类添加
+//分类展示视图
+Route::get('admin/goods/cate_list',function(){
+    return view('admin.new_goods.category.cate_list');
+});
+Route::get("admin/goods/cate_add","Admin\CategoryController@add");
+Route::POST("admin/goods/cate_do_add","Admin\CategoryController@do_add");
+Route::get("admin/goods/cate_index","Admin\CategoryController@index");
+
+
+//类型添加
+//类型展示视图
+Route::get('admin/goods/type_list',function(){
+    return view('admin.new_goods.type.type_list');
+});
+Route::get("admin/goods/type_add","Admin\TypeController@add");
+Route::POST("admin/goods/type_do_add","Admin\TypeController@do_add");
+Route::get("admin/goods/type_index","Admin\TypeController@index");
+
+//属性添加
+//属性展示视图
+Route::get('admin/goods/attr_list',function(){
+    return view('admin.new_goods.attribute.attr_list');
+});
+Route::get("admin/goods/attr_add","Admin\AttributeController@add");
+Route::POST("admin/goods/attr_do_add","Admin\AttributeController@do_add");
+Route::get("admin/goods/attr_index","Admin\AttributeController@index");
+
+//商品添加页面
+Route::get("admin/goods/goods_add","Admin\Goods_controller@add");
+//查询属性
+Route::get("admin/goods/getAttr","Admin\Goods_controller@getAttr");

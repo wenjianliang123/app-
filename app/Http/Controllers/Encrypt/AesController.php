@@ -11,6 +11,7 @@ class AesController extends Controller
 {
     public function aes_running()
     {
+//        return view("hadmin/admin");die();
 //        echo phpinfo();die();
 //        $obj = new Aes('fdjfdsfjakfjadii');
         $obj = new Aes('wenjianliang');

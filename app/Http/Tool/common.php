@@ -97,6 +97,56 @@ class common extends Controller
     }
 
 
+    //递归千万注意不是无限级分类
+    function createLevel($cate_info,$parent_id=0,$level=0){
+        static $result=[];
+        foreach ($cate_info as $v) {
+            if ($v['parent_id']==$parent_id) {
+                $v['level']=$level;
+                $result[]=$v;
+                createLevel($cate_info,$v['id'],$level+1);
+            }
+        }
+        return $result;
+    }
+
+
+    function createTree($data,$parent_id=0,$level=1,$field="id")
+    {
+        static $result=[];
+        $field=$field;
+        if($data){
+            foreach ($data as $key => $val) {
+                if($val['parent_id']==$parent_id){
+                    $val['level']=$level;
+                    $result[]=$val;
+                    //$val['id']    需改id
+                    createTree($data,$val[$field],$level+1,$field);
+                }
+            }
+            return $result;
+        }
+    }
+    /*无限极分类
+        $result 	存放结果的静态数组
+        $parent_id	父级id 默认为0 代表一级
+        $date 		要循环的数据
+    */
+    function createSonTree($data,$parent_id=0)
+    {
+        $result=[];
+        if($data){
+            foreach ($data as $key => $val) {
+                if($val['parent_id']==$parent_id){
+                    $result[$key]=$val;
+                    $result[$key]['son']=createSonTree($data,$val['id']);
+                }
+            }
+            return $result;
+        }
+    }
+
+
 
 }
 
