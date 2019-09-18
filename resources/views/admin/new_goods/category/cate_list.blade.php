@@ -6,6 +6,7 @@
             <tr style="background-color: rgba(0,0,0,0.1);">
                 <td>Id</td>
                 <td>分类名称</td>
+                <td>该分类下商品数量</td>
                 <td>操作</td>
             </tr>
             <tbody class="cate_add">
@@ -41,6 +42,7 @@
                 //往tr里面内部后面追加
                 tr.append("<td>"+v.cate_id+"</td>");
                 tr.append("<td>"+repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",v.level)+v.cate_name+"</td>");
+                tr.append("<td>"+v.goods_count+"</td>");
                 tr.append("<td>" +
                     "<a href='javascript:;' class='del btn btn-danger'  cate_id='"+v.cate_id+"'>删除</a>" +
                     "&nbsp||&nbsp" +

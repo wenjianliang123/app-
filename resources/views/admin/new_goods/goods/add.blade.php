@@ -1,5 +1,4 @@
 @extends('hadmin.admin')
-
 @section('content')
     <h3>商品添加</h3>
     <ul class="nav nav-tabs">
@@ -8,16 +7,16 @@
         <li role="presentation" ><a href="javascript:;" name='detail'>商品详情</a></li>
     </ul>
     <br>
-    <form action='' method="POST" enctype="multipart/form-data" id='form'>
-
+    <form action='{{asset("admin/goods/goods_do_add")}}' method="POST" enctype="multipart/form-data" id='form'>
+        @csrf
         <div class='div_basic div_form'>
             <div class="form-group">
                 <label for="exampleInputEmail1">商品名称</label>
-                <input type="text" class="form-control" name='goods_name'>
+                <input type="text" class="form-control goods_name" name='goods_name'>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">商品分类</label>
-                <select class="form-control" name='cate_id'>
+                <select class="form-control cate_id" name='cate_id'>
                     <option value="">请选择</option>
                     @foreach($cate_info as $k =>$v)
                         <option value="{{$v->parent_id}}">{{$v->cate_name}}</option>
@@ -30,19 +29,28 @@
             </div>
 
             <div class="form-group">
+                <label for="exampleInputEmail1">是否上架</label>
+                <input type="radio" class="on_sale" name='on_sale' value="1">上架
+                <input type="radio" class="on_sale" name="on_sale" value="2" checked>下架
+            </div>
+
+            <div class="form-group">
                 <label for="exampleInputEmail1">商品价钱</label>
                 <input type="text" class="form-control" name='goods_price'>
             </div>
 
             <div class="form-group">
                 <label for="exampleInputFile">商品图片</label>
-                <input type="file" name='file'>
+                <input type="file" name='goods_img'>
             </div>
         </div>
         <div class='div_detail div_form' style='display:none'>
             <div class="form-group">
                 <label for="exampleInputFile">商品详情</label>
-                <textarea class="form-control" rows="3"></textarea>
+                <!-- 加载编辑器的容器 -->
+                <script id="container" name="goods_description" type="text/plain">
+                这里写你的初始化内容
+                </script>
             </div>
         </div>
         <div class='div_attr div_form' style='display:none'>
@@ -58,22 +66,7 @@
             <br>
 
             <table width="100%" id="attrTable" class='table table-bordered'>
-                <tr>
-                    <td>前置摄像头</td>
-                    <td>
-                        <input type="hidden" name="attr_id_list[]" value="211">
-                        <input name="attr_value_list[]" type="text" value="" size="20">
-                        <input type="hidden" name="attr_price_list[]" value="0">
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="javascript:;">[+]</a>颜色</td>
-                    <td>
-                        <input type="hidden" name="attr_id_list[]" value="214">
-                        <input name="attr_value_list[]" type="text" value="" size="20">
-                        属性价格 <input type="text" name="attr_price_list[]" value="" size="5" maxlength="10">
-                    </td>
-                </tr>
+
             </table>
             <!-- <div class="form-group">
                     颜色:
@@ -87,10 +80,20 @@
 
         </div>
 
-        <button type="button" class="btn btn-default" id='btn'>添加</button>
+        <button type="submit" class="btn btn-default add_goods" id='btn'>添加</button>
     </form>
     <script src="{{asset('bootstrap/jquery.min.js')}}"></script>
     <script src="{{asset('bootstrap/bootstrap.min.js')}}"></script>
+    {{--富文本编辑器--}}
+    <!-- 配置文件 -->
+    <script type="text/javascript" src="{{asset('/ueditor/ueditor.config.js')}}"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="{{asset('/ueditor/ueditor.all.js')}}"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('container');
+    </script>
+    {{--富文本编辑器--}}
     <script type="text/javascript">
         //标签页 页面渲染
         $(".nav-tabs a").on("click",function(){
@@ -100,6 +103,29 @@
             $(".div_form").hide();
             $(".div_"+name).show();  // $(".div_"+name)
         });
+
+        //非空验证 阻止表单提交
+        $(document).on('click','.add_goods',function (res) {
+            var flag=false;
+            var goods_name=$(".goods_name").val();
+            var cate_id=$(".cate_id").val();
+            if(goods_name==''||cate_id==''){
+                flag=false;
+            }else if(goods_name!=''&&cate_id!=''){
+                flag=true;
+            }
+            if(flag){
+                //允许添加
+            }else{
+                //阻止提交
+                alert('商品名称、分类名称必填');
+                return false;
+            }
+
+
+        });
+
+
         $("[name='type_id']").on('change',function(){
            //获取被选中的select中的val值
             var type_id=$(this).val();
@@ -116,20 +142,22 @@
                     //res有几个数据就在变革中添加几个tr
                     $.each(res,function (i,v) {
                         if(v.attribute_is==1){
+                            //不可选属性
                             var tr='<tr>\
                                 <td>'+v.attribute_name+'</td>\
                                 <td>\
-                                    <input type="hidden" name="attr_id_list[]" value="211">\
+                                    <input type="hidden" name="attr_id_list[]" value="'+v.attribute_id+'">\
                                     <input name="attr_value_list[]" type="text" value="" size="20">\
                                     <input type="hidden" name="attr_price_list[]" value="0">\
                                 </td>\
                             </tr>';
                         }else{
+                            //可选属性
                             var tr='<tr>\
                                 <td>\
                                 <a href="javascript:;" class="addRow">[+]</a>'+v.attribute_name+'</td>\
                                 <td>\
-                                <input type="hidden" name="attr_id_list[]" value="214">\
+                                <input type="hidden" name="attr_id_list[]" value="'+v.attribute_id+'">\
                                 <input name="attr_value_list[]" type="text" value="" size="20">\
                                 属性价格 <input type="text" name="attr_price_list[]" value="" size="5" maxlength="10">\
                                 </td>\
@@ -158,5 +186,7 @@
             }
 
         })
+
+
     </script>
 @endsection

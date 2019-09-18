@@ -114,17 +114,19 @@ Route::get('api/encrypt/rsa','Encrypt\RsaController@Rsa_running');
 //商城项目
 
 //分类添加
-//分类展示视图
+//分类展示视图 (接口做的)
 Route::get('admin/goods/cate_list',function(){
     return view('admin.new_goods.category.cate_list');
 });
 Route::get("admin/goods/cate_add","Admin\CategoryController@add");
 Route::POST("admin/goods/cate_do_add","Admin\CategoryController@do_add");
 Route::get("admin/goods/cate_index","Admin\CategoryController@index");
+//分类名称唯一性验证
+Route::POST("admin/goods/cate_name_unique_verufy","Admin\CategoryController@cate_name_unique_verufy");
 
 
 //类型添加
-//类型展示视图
+//类型展示视图 (接口做的)
 Route::get('admin/goods/type_list',function(){
     return view('admin.new_goods.type.type_list');
 });
@@ -133,15 +135,37 @@ Route::POST("admin/goods/type_do_add","Admin\TypeController@do_add");
 Route::get("admin/goods/type_index","Admin\TypeController@index");
 
 //属性添加
-//属性展示视图
-Route::get('admin/goods/attr_list',function(){
-    return view('admin.new_goods.attribute.attr_list');
-});
+//属性展示视图 (接口做的)
+Route::get('admin/goods/attr_list',"Admin\AttributeController@attr_list");
 Route::get("admin/goods/attr_add","Admin\AttributeController@add");
 Route::POST("admin/goods/attr_do_add","Admin\AttributeController@do_add");
 Route::get("admin/goods/attr_index","Admin\AttributeController@index");
+//属性批量删除
+Route::get("admin/goods/attr_pishan","Admin\AttributeController@pishan");
+
 
 //商品添加页面
 Route::get("admin/goods/goods_add","Admin\Goods_controller@add");
-//查询属性
+//查询属性 （用于选择商品类型时出现对应的商品属性）
 Route::get("admin/goods/getAttr","Admin\Goods_controller@getAttr");
+//执行商品添加
+Route::POST("admin/goods/goods_do_add","Admin\Goods_controller@store");
+//跳转去库存页面
+Route::get("admin/goods/goods_sku/{goods_id}","Admin\Goods_controller@sku");
+//执行添加sku
+Route::POST("admin/goods/goods_do_sku","Admin\Goods_controller@sku_do_add");
+//商品展示页面
+Route::get("admin/goods/goods_list","Admin\Goods_controller@goods_list");
+//商品展示接口
+Route::get("admin/goods/goods_index","Admin\Goods_controller@index");
+//商品名称即点即改
+Route::get("admin/goods/goods_jidianjigai","Admin\Goods_controller@goods_jidianjigai");
+//商品上架即点即改
+Route::get("admin/goods/goods_jidianjigai_1","Admin\Goods_controller@goods_jidianjigai_1");
+
+
+//每日一练
+//字符串反转
+Route::get("test_1","EveryDay\TestController@test_1_0916");
+//中文反转
+Route::get("test_2","EveryDay\TestController@Chinese_fanzhuan");
