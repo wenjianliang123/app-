@@ -108,21 +108,33 @@ class Goods_controller extends Controller
                 dd($goods_attr_relation_Data);*/
         //效率高一点的添加 只循环查询一次 只添加一次
         $goods_attr_relation_Data=[];
-        foreach ($postData['attr_id_list'] as $k =>$v) {
-            //不为空 （属性值为空 停止入库）
-            if($postData['attr_value_list'][$k]!=''){
-                $goods_attr_relation_Data[]=[
-                    'goods_id' => $goods_id,
-                    'attr_id' => $v,
-                    'attr_value' => $postData['attr_value_list'][$k],
-                    'attr_price' => $postData['attr_price_list'][$k],
-                ];
+        if(!empty($postData['attr_id_list'])){
+            foreach ($postData['attr_id_list'] as $k =>$v) {
+                //不为空 （属性值为空 停止入库）
+                if($postData['attr_value_list'][$k]!=''){
+                    $goods_attr_relation_Data[]=[
+                        'goods_id' => $goods_id,
+                        'attr_id' => $v,
+                        'attr_value' => $postData['attr_value_list'][$k],
+                        'attr_price' => $postData['attr_price_list'][$k],
+                    ];
+                }
             }
         }
+
         $goods_attr_relation_Data_1 = Goods_Attr_relation::insert($goods_attr_relation_Data);
 //        dd($goods_attr_relation_Data_1);
         //跳转到库存页面
-        return redirect("http://www.dijiuyue.com/admin/goods/goods_sku/".$goods_id);
+//dd(1);
+
+        echo "<script>function yourConfirm(goods_id){
+        if (confirm('是否去添加货品 取消则会跳转去商品列表?')) {
+            window.location.href = 'http://www.dijiuyue.com/admin/goods/goods_sku/'+goods_id;
+        }else{
+            location.href='http://www.dijiuyue.com/admin/goods/goods_list';
+        }
+    }</script>";
+        echo "<center><a href=\"javascript:;\" onclick='yourConfirm(\"{$goods_id}\")'>添加商品成功 请选择下一步操作</a></center>";
     }
 
     /**
@@ -170,23 +182,37 @@ class Goods_controller extends Controller
         $attr_and_sku_data=$request->all();
 //        dd($attr_and_sku_data);
         //计算如何分割数组
-        $size=count($attr_and_sku_data['attr_id_list']) / count($attr_and_sku_data['product_number']);
+        if(!empty($attr_and_sku_data['attr_id_list'])){
+            $size=count($attr_and_sku_data['attr_id_list']) / count($attr_and_sku_data['product_number']);
+
 //        dd($size);
-        //分割数组
+            //分割数组
 //        dd($attr_and_sku_data['attr_id_list']);
-        $attr_id_list_info=array_chunk($attr_and_sku_data['attr_id_list'],$size);
-//        dd($attr_id_list_info);
-        //循环入库
-        $insert_data=[];
-        foreach ($attr_id_list_info as $k=>$v){
-            $insert_data[]=[
-                'goods_id'=>$attr_and_sku_data['goods_id'],
-                'attr_value_list'=>implode(',',$v),
-                'sku'=>$attr_and_sku_data['product_number'][$k],
-            ];
+            $attr_id_list_info=array_chunk($attr_and_sku_data['attr_id_list'],$size);
+//            dd($attr_id_list_info);
+            //循环入库
+            $insert_data=[];
+            foreach ($attr_id_list_info as $k=>$v){
+                $insert_data[]=[
+                    'goods_id'=>$attr_and_sku_data['goods_id'],
+                    'attr_value_list'=>implode(',',$v),
+                    'sku'=>$attr_and_sku_data['product_number'][$k],
+                ];
+            }
+            $result=SKU_model::insert($insert_data);
+            dd($result);
+        }else{
+            $insert_data=[];
+//            dd($attr_and_sku_data['product_number']);
+                $insert_data[]=[
+                    'goods_id'=>$attr_and_sku_data['goods_id'],
+                    'sku'=>implode($attr_and_sku_data['product_number']),
+                ];
+            $result=SKU_model::insert($insert_data);
+            dd($result);
         }
-        $result=SKU_model::insert($insert_data);
-        dd($result);
+
+//
     }
 
     /**
@@ -278,7 +304,7 @@ class Goods_controller extends Controller
     }
 
     //上架即点即改
-    public function goods_jidianjigai_1(Request $request)
+    /*public function goods_jidianjigai_1(Request $request)
     {
         $goods_name=$request->on_sale;
         $goods_id=$request->goods_id;
@@ -296,6 +322,33 @@ class Goods_controller extends Controller
             }
         }else{
             echo 1;
+        }
+    }*/
+    public function goods_jidianjigai_1(Request $request)
+    {
+        $goods_id=$request->goods_id;
+//        dd($goods_id);
+        //查询goods_id的对应的上架信息
+        $on_sale=Goods_model::where('goods_id',$goods_id)->value('on_sale');
+//        dd($on_sale);
+        if($on_sale==1){
+            $GoodsModel = Goods_model::find($goods_id);
+            $GoodsModel->on_sale = 2;
+            $result=$GoodsModel->save();
+            if($result){
+                return json_encode(['code'=>200,'msg'=>'已下架']);
+            }else{
+                return json_encode(['code'=>500,'msg'=>'上下架修改失败']);
+            }
+        }else if($on_sale==2){
+            $GoodsModel = Goods_model::find($goods_id);
+            $GoodsModel->on_sale = 1;
+            $result=$GoodsModel->save();
+            if($result){
+                return json_encode(['code'=>200,'msg'=>'已上架']);
+            }else{
+                return json_encode(['code'=>500,'msg'=>'上下架修改失败']);
+            }
         }
     }
 }

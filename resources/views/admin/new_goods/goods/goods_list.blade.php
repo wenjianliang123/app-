@@ -110,27 +110,31 @@
 
         //即点即改 上架
         $(document).on('click','.click_on_sale',function (res) {
-//           alert($(this).text());
-            var _this = $(this);
-            var old_val  = _this.html();//获取原来的值
-//            alert(old_val);return;
-            _this.parent().html("<input type='text' name=" + old_val + " class='focus' value=" + old_val + " />");
-            $(".focus").focus();
-            $('.focus').blur(function(){
-                var _this = $(this);
-                var new_val = _this.val();//修改完的值
-//                alert(new_val);return;
-                var goods_id = _this.parents().attr("goods_id");
-//                alert(goods_id);return;
-                $.get("http://www.dijiuyue.com/admin/goods/goods_jidianjigai_1",{on_sale: new_val, goods_id:goods_id}, function(msg) {
-                    if(msg=='2'){
-                        _this.parent().html('<b class="click">' + new_val + '</b>');
-                    }else{
-                        _this.parent().html('<b class="click">' + old_val + '</b>');
-                    }
-                })
-            })
+            var _this=$(this);
+            var url='http://www.dijiuyue.com/admin/goods/goods_jidianjigai_1';
+            var goods_id = _this.parents().attr("goods_id");
+//            console.log(goods_id);return;
+            $.ajax({
+                url:url,
+                type:"GET",
+                data:{goods_id:goods_id},
+                dataType:'json',
+                success:function(res){
+//                    console.log(res);
+                   if(res.code==500){
+                       alert(res.msg);return;
+                   }else if(res.code==200){
+                       if(_this.text()=='×'){
+                           _this.text('√');
+                       }else{
+                           _this.text('×');
+                       }
+                   }
+
+                },
+            });
         });
+
 
         //ajax分页
         /**

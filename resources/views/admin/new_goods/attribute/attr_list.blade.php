@@ -2,7 +2,7 @@
 @section('content')
     <h3>属性展示</h3>
     <form action="">
-        搜索：
+        类型搜索：
         <select name="type_id" id="type_info">
             <option value="">请选择</option>
             @foreach($type_info as $k =>$v)
@@ -14,7 +14,7 @@
         <table class="table table-striped" style="">
             <tr style="background-color: rgba(0,0,0,0.1);">
                 <td>
-                    全选:<input type="checkbox" name="all_box" id="all_box">
+                    全选、全不选:<input type="checkbox" name="all_box" id="all_box">
                     反选:<input type="checkbox" name="fanxuan" id="fanxuan">
                     <input type="button" class="pishan" value="批删">
                 </td>

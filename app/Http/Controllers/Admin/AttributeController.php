@@ -89,6 +89,7 @@ class AttributeController extends Controller
     public function pishan(Request $request)
     {
         $attribute_id_info=ltrim($request->all()['attr_id'],',');
+        $attribute_id_info=explode(',',$attribute_id_info);
 //        dd($attribute_id_info);
         $result=Goods_attribute_model::destroy($attribute_id_info);
 //        dd($result);

@@ -5,8 +5,10 @@
         <table>
             <tr>
                 <td>分类名称</td>
-                <td><input type="text" name="cate_name" class="cate_name"><span
-                            5                                             id="tishi"></span></td>
+                <td>
+                    <input type="text" name="cate_name" class="cate_name">
+                        <span id="tishi"></span>
+                </td>
             </tr>
             <tr>
                 <td>所属分类</td>
