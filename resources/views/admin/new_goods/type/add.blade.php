@@ -2,14 +2,14 @@
 @section("content")
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <form action="">
-        <table>
+        <table align="center">
             <tr>
                 <td>类型名称</td>
-                <td><input type="text" name="type_name" class="type_name"></td>
+                <td><input type="text" name="type_name" class="form-control type_name" style="width: auto;height: auto"></td>
             </tr>
             <tr>
                 <td></td>
-                <td colspan="2"><input type="button" class="add_type" value="添加类型"></td>
+                <td colspan="2"><input type="button" class="btn btn-info add_type" value="添加类型"></td>
             </tr>
         </table>
     </form>

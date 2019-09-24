@@ -60,6 +60,11 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'check_login_admin' => \App\Http\Middleware\check_login_admin::class,
+        'Api_header_kua_yu' => \App\Http\Middleware\Api_header_kua_yu::class,
+        'check_login_api_thirdly_week_test' => \App\Http\Middleware\check_login_api_thirdly_week_test::class,
+        'my_token_verify' => \App\Http\Middleware\my_token_verify::class,
+        'Api_prevent_refresh' => \App\Http\Middleware\Api_prevent_refresh::class,
     ];
 
     /**

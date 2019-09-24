@@ -135,6 +135,9 @@ class Goods_controller extends Controller
         }
     }</script>";
         echo "<center><a href=\"javascript:;\" onclick='yourConfirm(\"{$goods_id}\")'>添加商品成功 请选择下一步操作</a></center>";
+
+
+//        dd(111);
     }
 
     /**
@@ -200,7 +203,12 @@ class Goods_controller extends Controller
                 ];
             }
             $result=SKU_model::insert($insert_data);
-            dd($result);
+            if($result){
+                echo "<script> alert('货品添加成功，即将跳转去商品列表');window.location.href='http://www.dijiuyue.com/admin/goods/goods_list'; </script>";
+            }else{
+                echo "<script> alert('货品添加失败');window.history.go(-1); </script>";
+            }
+//            dd($result);
         }else{
             $insert_data=[];
 //            dd($attr_and_sku_data['product_number']);
@@ -209,7 +217,12 @@ class Goods_controller extends Controller
                     'sku'=>implode($attr_and_sku_data['product_number']),
                 ];
             $result=SKU_model::insert($insert_data);
-            dd($result);
+//            dd($result);
+            if($result){
+                echo "<script> alert('货品添加成功，即将跳转去商品列表');window.location.href='http://www.dijiuyue.com/admin/goods/goods_list'; </script>";
+            }else{
+                echo "<script> alert('货品添加失败');window.history.go(-1); </script>";
+            }
         }
 
 //
@@ -255,9 +268,13 @@ class Goods_controller extends Controller
         foreach ($data['data'] as $k=>$v){
 //            dump($k);
             if($v['on_sale']==1){
-                $a='√';
+                $a="🏒";
+//                $a="🏒";
+//                $a="<b style='color: green;'>✔</b>";
             }else{
-                $a='×';
+//                $a='×';
+//                $a="<b style='color: red;'>✖</b>";
+                $a="❌";
             }
 //            dump($data[$k]['on_sale']);die;
 //            dump($k);die;

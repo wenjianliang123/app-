@@ -2,8 +2,9 @@
 @section('content')
     <h3>属性展示</h3>
     <form action="">
-        类型搜索：
-        <select name="type_id" id="type_info">
+
+        <label for="exampleInputEmail1">类型搜索：</label>
+        <select name="type_id" class="form-control" style="height: auto;width: auto" id="type_info">
             <option value="">请选择</option>
             @foreach($type_info as $k =>$v)
            <option <?php if(!empty($_GET['type_id'])){if($_GET['type_id']==$v['type_id']){ echo "selected";}}?> value="{{$v['type_id']}}">{{$v['type_name']}}</option>
@@ -16,7 +17,7 @@
                 <td>
                     全选、全不选:<input type="checkbox" name="all_box" id="all_box">
                     反选:<input type="checkbox" name="fanxuan" id="fanxuan">
-                    <input type="button" class="pishan" value="批删">
+                    <input type="button"  class=" btn btn-info pishan" value="批删">
                 </td>
                 <td>属性ID</td>
                 <td>属性名称</td>
@@ -45,6 +46,7 @@
         var type_id=getUrlParam('type_id');
 //        console.log(type_id);
         if(type_id!=''){
+
 //            alert(type_id);
             //进入页面渲染
             $.ajax({
@@ -57,6 +59,7 @@
 
             });
         }else{
+
             $.ajax({
                 url:url,
                 type:"GET",

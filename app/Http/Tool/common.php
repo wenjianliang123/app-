@@ -4,6 +4,7 @@ namespace App\Http\Tool;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Model\Index_login;
 
 class common extends Controller
 {
@@ -84,7 +85,7 @@ class common extends Controller
         return $access_token;
     }
 
-    //清零调用接口次数限制
+    //清零微信调用接口次数限制
     public static function empty_api_count()
     {
         $url="https://api.weixin.qq.com/cgi-bin/clear_quota?access_token=".self::get_access_token();
@@ -96,7 +97,7 @@ class common extends Controller
 
     }
 
-
+    //以下是三种无限极分类 在本项目中没有使用以下三种
     //递归千万注意不是无限级分类
     function createLevel($cate_info,$parent_id=0,$level=0){
         static $result=[];
@@ -143,6 +144,33 @@ class common extends Controller
                 }
             }
             return $result;
+        }
+    }
+
+    //获取前台用户信息
+    public static function get_user_info_2($token)
+    {
+//        $token=$request->token;
+        //判断token是否不为空
+        if(!empty($token)){
+            $token_info=Index_login::where('token',$token)->first();
+            //判断token是否正确
+            if($token_info){
+                //判断超出时间没有
+                if(!(time()>$token_info['token_expire'])){
+                    $token_info->token_expire=time()+7200;
+                    $token_info->save();
+                    return json_encode(['code'=>200,'msg'=>'查询成功','data'=>$token_info],JSON_UNESCAPED_UNICODE);
+                }else{
+                    return json_encode(['code'=>404,'msg'=>'token已过期，请重新登录'],JSON_UNESCAPED_UNICODE);
+                }
+
+            }else{
+                //没有这个数据
+                return json_encode(['code'=>404,'msg'=>'查询失败，token不对'],JSON_UNESCAPED_UNICODE);
+            }
+        }else{
+            return json_encode(['code'=>404,'msg'=>'token不能为空'],JSON_UNESCAPED_UNICODE);
         }
     }
 

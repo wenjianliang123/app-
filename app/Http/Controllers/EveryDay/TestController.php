@@ -13,8 +13,9 @@ class TestController extends Controller
      */
     public function test_1_0916()
     {
-        $str='ab1';
-        echo $this->str_rev($str);
+//        $str='ab1';
+        $str='问建梁';
+        echo $this->myrev($str);
 
     }
     //比较好的方法
@@ -41,6 +42,16 @@ class TestController extends Controller
         $str_length_2=$str_length/2;
         $str_1=substr($str,$str_length_2);
         return $str_1;
+    }
+    //老师的方法
+    public function str_rev_2($string){
+        $str_length=strlen($string);
+        $new_str='';
+        for ($i=$str_length-1;$i>=0;$i--)
+        {
+            $new_str.=$string[$i];
+        }
+        return $new_str;
     }
 
     /**
@@ -72,7 +83,7 @@ class TestController extends Controller
      $string=implode($array);
      return $string;
  }
-    //iconv_strlen()方法实现中文反转 较好
+    //iconv_strlen()方法实现中文反转
     function strReverse($str1)
     {
         $str2 = '';
@@ -82,6 +93,30 @@ class TestController extends Controller
         }
         return $str2;
     }
+
+    //反转中文字符串函数 老师写的  较好
+    function myrev($str)
+    {
+        $newStr = "";
+        $length = mb_strlen($str); //2个长度单位
+        for ($i=$length-1; $i >= 0; $i--) {
+            //$newStr .= $str[$i];
+            $newStr .= mb_substr($str,$i,1);
+        }
+        return $newStr;
+    }
+
+    //自定义函数计算字符串长度
+    public function str_length($string)
+    {
+        $i=0;
+
+        while(isset($string[$i])){
+            $i++;
+        }
+        return $i;
+    }
+
 
 
 }

@@ -1,8 +1,8 @@
 @extends('hadmin.admin')
 @section('content')
     <h3>商品展示</h3>
-    <form action="">
-        <select name="cate_id" class="cate_id" id="">
+    <form action="" class="form-inline">
+        <select name="cate_id" class="form-control cate_id" style="height: auto;width: auto" id="">
             <option value="">所有分类</option>
             @foreach($cate_info as $k =>$v)
                 <option value="{{$v['cate_id']}}">{{$v['cate_name']}}</option>
@@ -10,7 +10,7 @@
         </select>
         <input type="radio" name="on_sale" class="on_sale" value="1">上架
         <input type="radio" name="on_sale" class="on_sale" value="2">下架
-        关键字：<input type="text" name="goods_name" class="goods_name" id="">
+        关键字：<input type="text" name="goods_name" class="form-control goods_name" style="height: auto;width: auto" id="">
         <input type="button" value="搜索" class="search_button">
     </form>
     <div class="rgba">
@@ -21,6 +21,7 @@
                 <td>商品货号</td>
                 <td>商品价格</td>
                 <td>上架</td>
+                <td>进货</td>
                 <td>操作</td>
             </tr>
             <tbody class="cate_add">
@@ -108,7 +109,30 @@
             })
         });
 
-        //即点即改 上架
+        /*//即点即改 上架
+        $(document).on('click','.click_on_sale',function (res) {
+//           alert($(this).text());
+            var _this = $(this);
+            var old_val  = _this.html();//获取原来的值
+//            alert(old_val);return;
+            _this.parent().html("<input type='text' name=" + old_val + " class='focus' value=" + old_val + " />");
+            $(".focus").focus();
+            $('.focus').blur(function(){
+                var _this = $(this);
+                var new_val = _this.val();//修改完的值
+//                alert(new_val);return;
+                var goods_id = _this.parents().attr("goods_id");
+//                alert(goods_id);return;
+                $.get("http://www.dijiuyue.com/admin/goods/goods_jidianjigai_1",{on_sale: new_val, goods_id:goods_id}, function(msg) {
+                    if(msg=='2'){
+                        _this.parent().html('<b class="click">' + new_val + '</b>');
+                    }else{
+                        _this.parent().html('<b class="click">' + old_val + '</b>');
+                    }
+                })
+            })
+        });*/
+
         $(document).on('click','.click_on_sale',function (res) {
             var _this=$(this);
             var url='http://www.dijiuyue.com/admin/goods/goods_jidianjigai_1';
@@ -121,15 +145,15 @@
                 dataType:'json',
                 success:function(res){
 //                    console.log(res);
-                   if(res.code==500){
-                       alert(res.msg);return;
-                   }else if(res.code==200){
-                       if(_this.text()=='×'){
-                           _this.text('√');
-                       }else{
-                           _this.text('×');
-                       }
-                   }
+                    if(res.code==500){
+                        alert(res.msg);return;
+                    }else if(res.code==200){
+                        if(_this.text() =="❌"){
+                            _this.text("🏒");
+                        }else{
+                            _this.html("❌");
+                        }
+                    }
 
                 },
             });
@@ -175,6 +199,7 @@
                 tr.append("<td>"+v.goods_sn+"</td>");
                 tr.append("<td>"+v.goods_price+"</td>");
                 tr.append("<td goods_id='"+v.goods_id+"'>"+"<b class='click_on_sale'>"+v.on_sale+"</b>"+"</td>");
+                tr.append("<td>"+"<a href='goods_sku/"+v.goods_id+"'>为此商品进货</a>"+"</td>");
 
                 tr.append("<td>" +
                     "<a href='javascript:;' class='del btn btn-danger'  goods_id='"+v.goods_id+"'>删除</a>" +

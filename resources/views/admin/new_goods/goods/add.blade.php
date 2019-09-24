@@ -7,81 +7,85 @@
         <li role="presentation" ><a href="javascript:;" name='detail'>商品详情</a></li>
     </ul>
     <br>
-    <form action='{{asset("admin/goods/goods_do_add")}}' method="POST" enctype="multipart/form-data" id='form'>
-        @csrf
-        <div class='div_basic div_form'>
-            <div class="form-group">
-                <label for="exampleInputEmail1">商品名称</label>
-                <input type="text" class="form-control goods_name" name='goods_name'>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">商品分类</label>
-                <select class="form-control cate_id" name='cate_id'>
-                    <option value="">请选择</option>
-                    @foreach($cate_info as $k =>$v)
-                        <option value="{{$v->parent_id}}">{{$v->cate_name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">商品货号</label>
-                <input type="text" class="form-control" name='goods_price'>
-            </div>
+    <center>
+        <form  action='{{asset("admin/goods/goods_do_add")}}' method="POST" enctype="multipart/form-data" id='form'>
+            @csrf
+            <div class='div_basic div_form' align="center">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">商品名称</label>
+                    <input type="text" style="width: auto" class="form-control goods_name" name='goods_name'>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">商品分类</label>
+                    <select class="form-control cate_id" style="width: auto;height: auto" name='cate_id'>
+                        <option value="">请选择</option>
+                        @foreach($cate_info as $k =>$v)
+                            <option value="{{$v->parent_id}}">{{$v->cate_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">商品货号</label>
+                    <input type="text" class="form-control" style="width: auto" name='goods_price'>
+                </div>
 
-            <div class="form-group">
-                <label for="exampleInputEmail1">是否上架</label>
-                <input type="radio" class="on_sale" name='on_sale' value="1">上架
-                <input type="radio" class="on_sale" name="on_sale" value="2" checked>下架
-            </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">是否上架</label>
+                    <input type="radio" class="on_sale" name='on_sale' value="1">上架
+                    <input type="radio" class="on_sale" name="on_sale" value="2" checked>下架
+                </div>
 
-            <div class="form-group">
-                <label for="exampleInputEmail1">商品价钱</label>
-                <input type="text" class="form-control" name='goods_price'>
-            </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">商品价钱</label>
+                    <input type="text" class="form-control" style="width: auto" name='goods_price'>
+                </div>
 
-            <div class="form-group">
-                <label for="exampleInputFile">商品图片</label>
-                <input type="file" name='goods_img'>
+                <div class="form-group">
+                    <label for="exampleInputFile">商品图片</label>
+                    <input type="file" class="btn btn-default goods_img" name='goods_img'>
+                    <img src="" id="img_show" style="width: 295px;height: 180px" alt="">
+                </div>
             </div>
-        </div>
-        <div class='div_detail div_form' style='display:none'>
-            <div class="form-group">
-                <label for="exampleInputFile">商品详情</label>
-                <!-- 加载编辑器的容器 -->
-                <script id="container" name="goods_description" type="text/plain">
+            <div class='div_detail div_form' style='display:none'>
+                <div class="form-group">
+                    <label for="exampleInputFile">商品详情</label>
+                    <!-- 加载编辑器的容器 -->
+                    <script id="container" name="goods_description" type="text/plain">
                 这里写你的初始化内容
                 </script>
+                </div>
             </div>
-        </div>
-        <div class='div_attr div_form' style='display:none'>
-            <div class="form-group">
-                <label for="exampleInputEmail1">商品类型</label>
-                <select class="form-control" name='type_id' >
-                    <option>请选择</option>
-                    @foreach($type_info as $k =>$v)
-                        <option value="{{$v->type_id}}">{{$v->type_name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <br>
+            <div class='div_attr div_form' style='display:none'>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">商品类型</label>
+                    <select class="form-control" style="width: auto;height: auto" name='type_id' >
+                        <option>请选择</option>
+                        @foreach($type_info as $k =>$v)
+                            <option value="{{$v->type_id}}">{{$v->type_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <br>
 
-            <table width="100%" id="attrTable" class='table table-bordered'>
+                <table width="100%" id="attrTable" style="margin-left: 350px" align="center" class='table table-bordered'>
 
-            </table>
-            <!-- <div class="form-group">
-                    颜色:
+                </table>
+                <!-- <div class="form-group">
+                        颜色:
+                        <input type="text" name='attr_value_list[]'>
+                </div> -->
+                <!-- <div class="form-group" style='padding-left:26px'>
+                    <a href="javascript:;">[+]</a>内存:
                     <input type="text" name='attr_value_list[]'>
-            </div> -->
-            <!-- <div class="form-group" style='padding-left:26px'>
-                <a href="javascript:;">[+]</a>内存:
-                <input type="text" name='attr_value_list[]'>
-                属性价格:<input type="text" name='attr_price_list[][]'>
-            </div> -->
+                    属性价格:<input type="text" name='attr_price_list[][]'>
+                </div> -->
 
-        </div>
+            </div>
 
-        <button type="submit" class="btn btn-default add_goods" id='btn'>添加</button>
-    </form>
+            <button type="submit" class="btn btn-default add_goods" id='btn'>添加</button>
+        </form>
+    </center>
+
     <script src="{{asset('bootstrap/jquery.min.js')}}"></script>
     <script src="{{asset('bootstrap/bootstrap.min.js')}}"></script>
     {{--富文本编辑器--}}
@@ -123,9 +127,32 @@
             }
 
 
+
         });
 
+        //图片预览
+        var base64Str;//这里定义 下面赋值 之后全局可调用
+        var file_name;
+        var file_size;
+        var file_type;
+        $(".goods_img").on('change',function(){
+            //模拟表单对象  FormData
+            var file = $('[name="goods_img"]')[0].files[0]; //获取到文件
+//        console.log(file);return;
+            file_name=file.name;
+            file_size=file.size;
+            file_type=file.type;
+            var reader = new FileReader(); //h5
+            reader.readAsDataURL(file); //读base编码后的url地址
+            reader.onload = function()
+            {
+                base64Str = this.result;
+//            console.log(this.result);
+                $("#img_show").attr('src',this.result);
+            }
+        });
 
+        //点击类型时出现对应属性
         $("[name='type_id']").on('change',function(){
            //获取被选中的select中的val值
             var type_id=$(this).val();
@@ -186,7 +213,6 @@
             }
 
         })
-
 
     </script>
 @endsection

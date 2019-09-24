@@ -7,6 +7,7 @@
                 <td>Id</td>
                 <td>类型名称</td>
                 <td>该类型下面的属性数量</td>
+                <td>该类型下面的属性列表</td>
                 <td>操作</td>
             </tr>
             <tbody class="cate_add">

@@ -1,5 +1,12 @@
 <?php
 
+Route::options('/{all}', function(Request $request) {
+    $origin = $request->header('ORIGIN', '*');
+    header("Access-Control-Allow-Origin: $origin");
+    header("Access-Control-Allow-Credentials: true");
+    header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+    header('Access-Control-Allow-Headers: Origin, Access-Control-Request-Headers, SERVER_NAME, Access-Control-Allow-Headers, cache-control, token, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie');
+})->where(['all' => '([a-zA-Z0-9-]|/)+']);
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -111,57 +118,128 @@ Route::get('api/encrypt/rsa','Encrypt\RsaController@Rsa_running');
 
 
 
-//商城项目
+//商城后台项目
 
-//分类添加
+Route::group(['middleware' => ['check_login_admin'],'prefix'=>'admin/goods'],function () {
+    //分类添加
 //分类展示视图 (接口做的)
-Route::get('admin/goods/cate_list',function(){
-    return view('admin.new_goods.category.cate_list');
-});
-Route::get("admin/goods/cate_add","Admin\CategoryController@add");
-Route::POST("admin/goods/cate_do_add","Admin\CategoryController@do_add");
-Route::get("admin/goods/cate_index","Admin\CategoryController@index");
+    Route::get('/cate_list',function(){
+        return view('admin.new_goods.category.cate_list');
+    });
+    Route::get("/cate_add","Admin\CategoryController@add");
+    Route::POST("/cate_do_add","Admin\CategoryController@do_add");
+    Route::get("/cate_index","Admin\CategoryController@index");
 //分类名称唯一性验证
-Route::POST("admin/goods/cate_name_unique_verufy","Admin\CategoryController@cate_name_unique_verufy");
+    Route::POST("/cate_name_unique_verufy","Admin\CategoryController@cate_name_unique_verufy");
 
 
 //类型添加
 //类型展示视图 (接口做的)
-Route::get('admin/goods/type_list',function(){
-    return view('admin.new_goods.type.type_list');
-});
-Route::get("admin/goods/type_add","Admin\TypeController@add");
-Route::POST("admin/goods/type_do_add","Admin\TypeController@do_add");
-Route::get("admin/goods/type_index","Admin\TypeController@index");
+    Route::get('/type_list',function(){
+        return view('admin.new_goods.type.type_list');
+    });
+    Route::get("/type_add","Admin\TypeController@add");
+    Route::POST("/type_do_add","Admin\TypeController@do_add");
+    Route::get("/type_index","Admin\TypeController@index");
 
 //属性添加
 //属性展示视图 (接口做的)
-Route::get('admin/goods/attr_list',"Admin\AttributeController@attr_list");
-Route::get("admin/goods/attr_add","Admin\AttributeController@add");
-Route::POST("admin/goods/attr_do_add","Admin\AttributeController@do_add");
-Route::get("admin/goods/attr_index","Admin\AttributeController@index");
+    Route::get('/attr_list',"Admin\AttributeController@attr_list");
+    Route::get("/attr_add","Admin\AttributeController@add");
+    Route::POST("/attr_do_add","Admin\AttributeController@do_add");
+    Route::get("/attr_index","Admin\AttributeController@index");
 //属性批量删除
-Route::get("admin/goods/attr_pishan","Admin\AttributeController@pishan");
+    Route::get("/attr_pishan","Admin\AttributeController@pishan");
 
 
 //商品添加页面
-Route::get("admin/goods/goods_add","Admin\Goods_controller@add");
+    Route::get("/goods_add","Admin\Goods_controller@add");
 //查询属性 （用于选择商品类型时出现对应的商品属性）
-Route::get("admin/goods/getAttr","Admin\Goods_controller@getAttr");
+    Route::get("/getAttr","Admin\Goods_controller@getAttr");
 //执行商品添加
-Route::POST("admin/goods/goods_do_add","Admin\Goods_controller@store");
+    Route::POST("/goods_do_add","Admin\Goods_controller@store");
 //跳转去库存页面
-Route::get("admin/goods/goods_sku/{goods_id}","Admin\Goods_controller@sku");
+    Route::get("/goods_sku/{goods_id}","Admin\Goods_controller@sku");
 //执行添加sku
-Route::POST("admin/goods/goods_do_sku","Admin\Goods_controller@sku_do_add");
+    Route::POST("/goods_do_sku","Admin\Goods_controller@sku_do_add");
 //商品展示页面
-Route::get("admin/goods/goods_list","Admin\Goods_controller@goods_list");
+    Route::get("/goods_list","Admin\Goods_controller@goods_list");
 //商品展示接口
-Route::get("admin/goods/goods_index","Admin\Goods_controller@index");
+    Route::get("/goods_index","Admin\Goods_controller@index");
 //商品名称即点即改
-Route::get("admin/goods/goods_jidianjigai","Admin\Goods_controller@goods_jidianjigai");
+    Route::get("/goods_jidianjigai","Admin\Goods_controller@goods_jidianjigai");
 //商品上架即点即改
-Route::get("admin/goods/goods_jidianjigai_1","Admin\Goods_controller@goods_jidianjigai_1");
+    Route::get("/goods_jidianjigai_1","Admin\Goods_controller@goods_jidianjigai_1");
+
+});
+
+
+//后台普通登录
+//登陆页面
+Route::get("admin/login","Admin\LoginController@login");
+//执行登陆操作
+Route::get("admin/do_login","Admin\LoginController@do_login");
+//注册页面
+Route::get("admin/register","Admin\LoginController@register");
+//执行注册操作
+Route::get("admin/do_register","Admin\LoginController@do_register");
+
+
+//商城前台项目
+
+
+
+Route::middleware(['Api_header_kua_yu'])->group(function () {
+    //分类接口
+    Route::get("index/goods/category_port","Index\GoodsController@category");
+    //新品接口
+    Route::get("index/goods/new_goods_port","Index\GoodsController@new_goods");
+    //商品列表(根据分类id)
+    Route::get("index/goods/cate_goods_port","Index\GoodsController@cate_goods");
+    //商品详情(根据商品id)
+    Route::get("index/goods/goods_detail_port","Index\GoodsController@goods_detail");
+    //前台登录接口
+    Route::get("index/login","Index\LoginController@login");
+    //前台查询用户信息
+    Route::get("index/get_user_info_1","Index\LoginController@get_user_info_1");
+
+    Route::middleware(['my_token_verify'])->group(function () {
+        //加入购物车
+        Route::any("index/goods/add_cart_port","Index\GoodsController@add_cart");
+    });
+
+
+});
+
+//Route::middleware(['Api_prevent_refresh','Api_header_kua_yu','my_token_verify'])->group(function () {
+//    //加入购物车
+//    Route::any("index/goods/add_cart_port","Index\GoodsController@add_cart");
+//});
+
+//退出接口
+Route::get("Api_prevent_refresh","Index\GoodsController@test");
+
+//__________________________第三周测试开始______________________________
+//登录接口
+Route::get("thirdly_week_test/login","thirdly_week_test\LoginController@login");
+//退出接口
+Route::get("thirdly_week_test/login_out","thirdly_week_test\LoginController@login_out");
+
+//登陆视图
+Route::get('/thirdly_week_test/login_view',function(){
+    return view('test.thirdly_week_test.login_view');
+});
+//天气视图
+Route::get('/thirdly_week_test/tianqi_view',function(){
+    return view('test.thirdly_week_test.tianqi_view');
+});
+
+Route::middleware(['check_login_api_thirdly_week_test'])->group(function () {
+//查询天气
+    Route::get("thirdly_week_test/chaxun_tianqi","thirdly_week_test\ApiController@chaxun_tianqi");
+});
+
+//______________________________第三周测试结束__________________________________
 
 
 //每日一练
@@ -169,3 +247,4 @@ Route::get("admin/goods/goods_jidianjigai_1","Admin\Goods_controller@goods_jidia
 Route::get("test_1","EveryDay\TestController@test_1_0916");
 //中文反转
 Route::get("test_2","EveryDay\TestController@Chinese_fanzhuan");
+

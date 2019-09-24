@@ -4,16 +4,19 @@
     <form action="">
         <table>
             <tr>
-                <td>分类名称</td>
+                <td><label for="exampleInputEmail1">分类名称&nbsp;</label></td>
                 <td>
-                    <input type="text" name="cate_name" class="cate_name">
+
+                        <input type="text" name="cate_name" class="form-control cate_name">
                         <span id="tishi"></span>
+
+
                 </td>
             </tr>
             <tr>
                 <td>所属分类</td>
                 <td>
-                    <select name="parent_id" class="parent_id" id="">
+                    <select name="parent_id" style="height: auto" class="form-control parent_id" id="">
                         <option value="0">顶级分类</option>
                         @foreach($data as $k =>$v)
                         <option value="{{$v->cate_id}}">
@@ -25,17 +28,17 @@
             <tr>
                 <td>是否显示</td>
                 <td>
-                    <input type="radio" name="is_show" class="is_show" checked value="1" >显示
-                    <input type="radio" name="is_show" class="is_show" value="2">隐藏
+                    <input type="radio" style="height: auto;width: auto" name="is_show" class="radio-inline is_show" checked value="1" ><b style="height: auto">显示</b>
+                    <input type="radio" name="is_show" class="radio-inline is_show" value="2"> <b style="height: auto">隐藏</b>
                 </td>
             </tr>
             <tr>
                 <td>排序功能</td>
-                <td><input type="number" class="cate_sort" name="cate_sort"></td>
+                <td><input type="number" class="form-control cate_sort" name="cate_sort"></td>
             </tr>
             <tr>
                 <td></td>
-                <td colspan="2"><input type="button" class="add_cate" value="添加分类"></td>
+                <td colspan="2"><input type="button" class="btn btn-info add_cate" value="添加分类"></td>
             </tr>
         </table>
     </form>

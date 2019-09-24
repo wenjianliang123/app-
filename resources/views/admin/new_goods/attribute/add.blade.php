@@ -2,15 +2,21 @@
 @section("content")
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <form action="">
-        <table>
+        <table align="center">
             <tr>
-                <td>属性名称</td>
-                <td><input type="text" name="attribute_name" class="attribute_name"></td>
+                <td>
+                    <label for="exampleInputEmail1">属性名称</label>
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="attribute_name" class="attribute_name">
+                </td>
             </tr>
             <tr>
-                <td>所属商品类型</td>
                 <td>
-                    <select name="type_id" class="type_id" id="">
+                    <label for="exampleInputEmail1">所属商品类型</label>
+                </td>
+                <td>
+                    <select name="type_id" style="height: auto;width: auto" class="form-control type_id" id="">
                         @foreach($type_info as $v)
                         <option value="{{$v->type_id}}">{{$v->type_name}}</option>
                         @endforeach
@@ -18,7 +24,9 @@
                 </td>
             </tr>
             <tr>
-                <td>属性是否可选:</td>
+                <td>
+                    <label for="exampleInputEmail1">属性是否可选:</label>
+                </td>
                 <td>
                     &nbsp
                     <input type="radio" name="attribute_is" class="attribute_is"  value="1" checked>唯一属性：
@@ -27,7 +35,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td colspan="2"><input type="button" class="add_cate" value="添加属性"></td>
+                <td colspan="2"><input type="button" class="btn btn-info add_cate" value="添加属性"></td>
             </tr>
         </table>
     </form>
