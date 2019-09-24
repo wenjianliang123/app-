@@ -244,9 +244,9 @@ class GoodsController extends Controller
 
     public function test(Request $request)
     {
-//        $ip = $_SERVER["REMOTE_ADDR"];
+        $ip = $_SERVER["REMOTE_ADDR"];
 //        $ip=$_SERVER['HTTP_USER_AGENT'];
-        $ip=$_SERVER;
+//        $ip=$_SERVER;
 
         dd($ip);
         $redis_key='pass_time_ip'.$ip;
